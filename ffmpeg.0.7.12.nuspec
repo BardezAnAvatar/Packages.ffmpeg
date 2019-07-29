@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ffmpeg</id>
+    <version>0.7.12</version>
+    <title>ffmpeg</title>
+    <projectUrl>https://ffmpeg.org/</projectUrl>
+    <authors>ffmpeg</authors>
+    <owners>ffmpeg</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Open-source video and audio decoder pipelines</description>
+    <summary>Open-source video and audio decoder pipelines</summary>
+    <copyright></copyright>
+    <language>en-GB</language>
+    <tags>ffmpeg</tags>
+  </metadata>
+  <files>
+    <file src="src\include\**" target="src\include" />
+    <file src="lib\**" target="lib" />
+  </files>
+</package>
