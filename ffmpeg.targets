@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="ffmpeg_Init">
+  <PropertyGroup Label="Default initializers for properties">
+    <Linkage-ffmpeg_Init Condition="'$(Linkage-ffmpeg_Init)' == ''">static</Linkage-ffmpeg_Init>
+    <CallingConvention-ffmpeg Condition="'$(CallingConvention-ffmpeg)' == ''">cdecl</CallingConvention-ffmpeg>
+  </PropertyGroup>
+   <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/x64/Release/aziotsharedutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../../build/native/x64/Release/aziotsharedutil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32Debug" Condition="(( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 ) And ('$(Platform)' == 'Win32' ) )">
+    <Link>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)../../build/native/Win32</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32Release" Condition="(( $(Configuration.ToLower().IndexOf('debug')) == -1 ) And ('$(Platform)' == 'Win32' ) )">
+    <Link>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)../../build/native/Win32</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win64Debug" Condition="(( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 ) And ('$(Platform)' == 'x64' ) )">
+    <Link>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)../../build/native/x64</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win64Release" Condition="(( $(Configuration.ToLower().IndexOf('debug')) == -1 ) And ('$(Platform)' == 'x64' ) )">
+    <Link>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)../../build/native/x64</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <UsingTask TaskName="ffmpeg_Contains" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
+    <ParameterGroup>
+      <Text Output="false" ParameterType="System.String" />
+      <Library Output="false" Required="true" ParameterType="System.String" />
+      <Value Output="false" Required="true" ParameterType="System.String" />
+      <Result Output="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code>Result = ((Text ?? "").Split(';').Contains(Library) ) ? Value : String.Empty;</Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ffmpeg_Init">
+    <ffmpeg_Contains Text="Linkage-dynamic" Library="ffmpeg" Value="dynamic" Condition="'$(Linkage-ffmpeg_Init)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-ffmpeg_Init" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="Linkage-static" Library="ffmpeg" Value="static" Condition="'$(Linkage-ffmpeg_Init)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-ffmpeg_Init" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="Linkage-ltcg" Library="ffmpeg" Value="ltcg" Condition="'$(Linkage-ffmpeg_Init)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-ffmpeg_Init" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="Linkage-sxs" Library="ffmpeg" Value="sxs" Condition="'$(Linkage-ffmpeg_Init)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-ffmpeg_Init" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="CallingConvention-cdecl" Library="ffmpeg" Value="cdecl" Condition="'$(CallingConvention-ffmpeg)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-ffmpeg" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="CallingConvention-stdcall" Library="ffmpeg" Value="stdcall" Condition="'$(CallingConvention-ffmpeg)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-ffmpeg" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="CallingConvention-fastcall" Library="ffmpeg" Value="fastcall" Condition="'$(CallingConvention-ffmpeg)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-ffmpeg" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="CallingConvention-thiscall" Library="ffmpeg" Value="thiscall" Condition="'$(CallingConvention-ffmpeg)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-ffmpeg" />
+    </ffmpeg_Contains>
+    <ffmpeg_Contains Text="CallingConvention-clrcall" Library="ffmpeg" Value="clrcall" Condition="'$(CallingConvention-ffmpeg)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-ffmpeg" />
+    </ffmpeg_Contains>
+  </Target>
+  <Target Name="ffmpeg_redist_AfterBuild" AfterTargets="AfterBuild" />
+  <Target Name="ffmpeg_redist_AfterBuild_Win32_and_Debug" Label="Win32 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="ffmpeg_redist_AfterBuild">
+  </Target>
+  <Target Name="ffmpeg_redist_AfterBuild_Win32_and_Release" Label="Win32 and Release" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="ffmpeg_redist_AfterBuild">
+  </Target>
+
+  <Target Name="ffmpeg_redist_AfterBuild_Win64_and_Debug" Label="Win64 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="ffmpeg_redist_AfterBuild">
+  </Target>
+  <Target Name="ffmpeg_redist_AfterBuild_Win64_and_Release" Label="Win64 and Release" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="ffmpeg_redist_AfterBuild">
+  </Target>
+  
+</Project>

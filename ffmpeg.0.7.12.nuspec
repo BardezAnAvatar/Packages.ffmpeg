@@ -12,10 +12,12 @@
     <summary>Open-source video and audio decoder pipelines</summary>
     <copyright></copyright>
     <language>en-GB</language>
-    <tags>ffmpeg</tags>
+    <tags>ffmpeg native</tags>
   </metadata>
   <files>
-    <file src="src\include\**" target="src\include" />
-    <file src="lib\**" target="lib\native" />
+    <file src="src\include\**" target="build\native\include" />
+    <file src="lib\x86\*" target="build\native\Win32" />
+    <file src="lib\x64\*" target="build\native\x64" />
+    <file src="*.targets" target="build\native\" />
   </files>
 </package>
