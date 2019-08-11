@@ -26,6 +26,8 @@
 #ifndef AVUTIL_COMMON_H
 #define AVUTIL_COMMON_H
 
+#define __STDC_CONSTANT_MACROS
+
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>

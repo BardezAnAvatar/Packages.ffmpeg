@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2008 Vitor Sessak
  *
  * This file is part of Libav.
  *
@@ -18,18 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef AVFILTER_VSRC_BUFFER_H
-#define AVFILTER_VSRC_BUFFER_H
+#ifndef AVFILTER_BUFFERSRC_H
+#define AVFILTER_BUFFERSRC_H
 
 /**
  * @file
- * memory buffer source API for video
+ * Memory buffer source API.
  */
 
-#include "libavcodec/avcodec.h" /* AVFrame */
 #include "avfilter.h"
 
-int av_vsrc_buffer_add_frame(AVFilterContext *buffer_filter, AVFrame *frame,
-                             int64_t pts, AVRational pixel_aspect);
+/**
+ * Add a buffer to the filtergraph s.
+ *
+ * @param buf buffer containing frame data to be passed down the filtergraph.
+ * This function will take ownership of buf, the user must not free it.
+ * A NULL buf signals EOF -- i.e. no more frames will be sent to this filter.
+ */
+int av_buffersrc_buffer(AVFilterContext *s, AVFilterBufferRef *buf);
 
-#endif /* AVFILTER_VSRC_BUFFER_H */
+#endif /* AVFILTER_BUFFERSRC_H */
